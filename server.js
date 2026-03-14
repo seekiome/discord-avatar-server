@@ -171,4 +171,12 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
+  // ═══ Self-ping every 14 min to prevent sleep ═══
+  const RENDER_URL = process.env.REDIRECT_URI?.replace('/callback', '') || `http://localhost:${PORT}`;
+  setInterval(() => {
+    fetch(RENDER_URL)
+      .then(() => console.log('Self-ping OK'))
+      .catch(() => console.log('Self-ping failed'));
+  }, 14 * 60 * 1000);
 });
