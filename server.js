@@ -31,7 +31,12 @@ app.use('/api', (req, res, next) => {
 });
 
 // ═══ STEP 1: Redirect user to Discord OAuth2 ═══
+const LOGIN_KEY = process.env.LOGIN_KEY || 'changeme';
+
 app.get('/login', (req, res) => {
+  if (req.query.key !== LOGIN_KEY) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
   const params = new URLSearchParams({
     client_id: CLIENT_ID,
     redirect_uri: REDIRECT_URI,
