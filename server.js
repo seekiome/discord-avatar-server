@@ -17,9 +17,18 @@ let accessToken = null;
 let refreshToken = null;
 
 app.use(cors({
-  origin: '*',
+  origin: 'https://seekiome.github.io',
   methods: ['GET'],
 }));
+
+// Block direct browser access to API - only allow requests from your site
+app.use('/api', (req, res, next) => {
+  const origin = req.get('origin') || req.get('referer') || '';
+  if (!origin.includes('seekiome.github.io')) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  next();
+});
 
 // ═══ STEP 1: Redirect user to Discord OAuth2 ═══
 app.get('/login', (req, res) => {
