@@ -145,21 +145,9 @@ app.get('/api/decoration', async (req, res) => {
     decorationUrl = `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?size=256&passthrough=true`;
   }
 
-  // Avatar
-  let avatarUrl = null;
-  const avatarHash = userData.avatar;
-  if (avatarHash) {
-    const ext = avatarHash.startsWith('a_') ? 'gif' : 'png';
-    avatarUrl = `https://cdn.discordapp.com/avatars/${userId}/${avatarHash}.${ext}?size=256`;
-  } else {
-    const defaultIndex = (BigInt(userId) >> 22n) % 6n;
-    avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
-  }
-
   res.json({
     success: true,
     username,
-    avatar_url: avatarUrl,
     decoration_url: decorationUrl,
     decoration_sku: userData.avatar_decoration_data?.sku_id || null,
   });
